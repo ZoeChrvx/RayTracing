@@ -1,11 +1,13 @@
 #pragma once
 #include "Ray.h"
+#include "Material.h"
 #include "Interval.h"
 
 class HitInfo {
 public:
 	Position coordinates;
 	Vector3 normal;
+	shared_ptr<Material> material;
 	double time;
 	bool frontFace;
 
