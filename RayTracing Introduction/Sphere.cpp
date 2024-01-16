@@ -1,6 +1,6 @@
 #include "Sphere.h"
 
-bool Sphere::Hit(const Ray& rRay, double rayTimeMin, double rayTimeMax, HitInfo& hitInfo) const {
+bool Sphere::Hit(const Ray& rRay, Interval rayTime, HitInfo& hitInfo) const {
 	Vector3 oC = rRay.GetOrigin() - mCenter;
 	double a = rRay.GetDirection().SquaredLength();
 	double halfB = Dot(oC, rRay.GetDirection());
@@ -12,9 +12,9 @@ bool Sphere::Hit(const Ray& rRay, double rayTimeMin, double rayTimeMax, HitInfo&
 
 	//Find the nearest root withing the min max time frame
 	double root = (-halfB - sqrtDiscriminant) / a;
-	if (root <= rayTimeMin || rayTimeMax <= root) {
+	if (!rayTime.Surrounds(root)) {
 		root = (-halfB + sqrtDiscriminant) / a;
-		if (root <= rayTimeMin || rayTimeMax <= root)
+		if (!rayTime.Surrounds(root))
 			return false;
 	}
 

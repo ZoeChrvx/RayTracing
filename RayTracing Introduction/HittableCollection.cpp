@@ -2,13 +2,13 @@
 
 using namespace std;
 
-bool HittableCollection::Hit(const Ray& rRay, double rayTimeMin, double rayTimeMax, HitInfo& hitInfo) const {
+bool HittableCollection::Hit(const Ray& rRay, Interval rayTime, HitInfo& hitInfo) const {
 	HitInfo tempInfo;
 	bool hasHit = false;
-	auto closestHit = rayTimeMax;
+	auto closestHit = rayTime.max;
 
 	for (const shared_ptr<Hittable>& hittable : mPool) {
-		if (hittable->Hit(rRay, rayTimeMin, closestHit, tempInfo)) {
+		if (hittable->Hit(rRay, Interval(rayTime.min, closestHit), tempInfo)) {
 			hasHit = true;
 			closestHit = tempInfo.time;
 			hitInfo = tempInfo;
@@ -17,3 +17,4 @@ bool HittableCollection::Hit(const Ray& rRay, double rayTimeMin, double rayTimeM
 
 	return hasHit;
 }
+

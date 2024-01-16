@@ -19,7 +19,7 @@ public:
 		mPool.push_back(hittable);
 	}
 
-	bool Hit(const Ray& rRay, double rayTimeMin, double rayTimeMax, HitInfo& hitInfo) const override;
+	bool Hit(const Ray& rRay, Interval rayTime, HitInfo& hitInfo) const override;
 
 };
 

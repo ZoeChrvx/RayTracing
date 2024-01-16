@@ -8,6 +8,6 @@ private:
 	double mRadius;
 public:
 	Sphere(Position center, double radius):mCenter(center),mRadius(radius){}
-	bool Hit(const Ray& rRay, double rayTimeMin, double rayTimeMax, HitInfo& hitInfo) const override;
+	bool Hit(const Ray& rRay, Interval rayTime, HitInfo& hitInfo) const override;
 };
 

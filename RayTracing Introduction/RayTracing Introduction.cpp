@@ -6,6 +6,8 @@
 #include "Utility.h"
 #include "HittableCollection.h"
 #include "Sphere.h"
+#include "Camera.h"
+
 
 using namespace std;
 
@@ -24,7 +26,7 @@ using namespace std;
 Color RayColor(const Ray& rRay, const Hittable& rWorld)
 {
     HitInfo hitInfo;
-    if (rWorld.Hit(rRay, 0, infinity, hitInfo)) {
+    if (rWorld.Hit(rRay, Interval(0, infinity), hitInfo)) {
         return 0.5 * (hitInfo.normal + Color(1, 1, 1));
     }
     Vector3 unitDirection = Unit(rRay.GetDirection());
@@ -65,6 +67,9 @@ int main(int argc, char* argv[])
     world.Add(make_shared<Sphere>(Position(0, 0, -1), 0.5));
     world.Add(make_shared<Sphere>(Position(0, -100.5, 0), 100));
 
+    Camera camera(400, 16.0 / 9.0);
+    camera.Render(world);
+    return 0;
     //Image
     cout << "P3\n" << width << ' ' << height << "\n255\n";
     for (int y = 0; y < height; y++)
