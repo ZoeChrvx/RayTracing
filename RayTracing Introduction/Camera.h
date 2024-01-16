@@ -6,7 +6,9 @@ class Camera
 {
 public:
 	Camera() = default;
-	Camera(double imageWidth, double ratio, int samplePerPixel = 10): aspectRatio(ratio), width(imageWidth), sampleCount(samplePerPixel) {}
+	Camera(double imageWidth, double ratio, int samplePerPixel = 10):
+		aspectRatio(ratio), width(imageWidth), sampleCount(samplePerPixel) {}
+
 	void Render(const Hittable& rWorld);
 
 private:
