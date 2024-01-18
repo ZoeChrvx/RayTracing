@@ -5,7 +5,7 @@ void Camera::Render(const Hittable& rWorld) {
 	Initialize();
 	cout << "P3\n" << width << ' ' << height << "\n255\n";
 	for (int y = 0; y < height; y++) {
-		//clog << "Progress : " << (y * 100 / height) << " %\n" << flush;
+		clog << "Progress : " << (y * 100 / height) << " %\n" << flush;
 		for (int x = 0; x < width; x++) {
 			Color pixel(0, 0, 0);
 			for (int sample = 0; sample < sampleCount; sample++) {
