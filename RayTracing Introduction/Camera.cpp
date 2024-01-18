@@ -1,6 +1,13 @@
 #include "Camera.h"
 using namespace std;
 
+void Camera::SetTransform(Position origin, Position lookAt, Vector3 upDirection)
+{
+	position = origin;
+	target = lookAt;
+	viewUp = upDirection;
+}
+
 void Camera::Render(const Hittable& rWorld) {
 	Initialize();
 	cout << "P3\n" << width << ' ' << height << "\n255\n";
@@ -23,20 +30,26 @@ void Camera::Initialize() {
 	height = static_cast<int>(width / aspectRatio);
 	if (height < 1) height = 1;
 
-	center = Position(0, 0, 0);
-	double focalLength = 1;
-	double viewportHeight = 2;
+	center = position;
+	double focalLength = (position - target).Length();
+	double theta = DegToRad(verticalFoV);
+	double h = tan(theta / 2);
+	double viewportHeight = 2 * h * focalLength;
 	double viewportWidth = viewportHeight * (static_cast<double>(width) / height);
+
+	forward = Unit(position - target);
+	right = Unit(Cross(viewUp, forward));
+	up = Cross(forward, right);
 
 	Vector3 viewportX = Vector3(viewportWidth, 0, 0);
 	Vector3 viewportY = Vector3(0, -viewportHeight, 0); //We invert Y
 
 	//Delta vector between pixels
-	pixelDeltaX = viewportX / width;
-	pixelDeltaY = viewportY / height;
+	pixelDeltaX = viewportX / width * right;
+	pixelDeltaY = viewportY / height * -up;
 
 	//Position of the top left pixel
-	Vector3 viewportOrigin = center - Vector3(0, 0, focalLength)
+	Vector3 viewportOrigin = center - (focalLength * forward)
 		- viewportX / 2 - viewportY / 2;
 
 	originPixelLocation = viewportOrigin + 0.5 * (pixelDeltaX + pixelDeltaY);

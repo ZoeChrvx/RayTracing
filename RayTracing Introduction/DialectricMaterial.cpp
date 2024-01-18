@@ -1,6 +1,15 @@
 #include "DialectricMaterial.h"
 #include "Hittable.h"
 
+
+double DialectricMaterial::Reflectance(double cosine, double pRefractionIndex)
+{
+	//Shlick approximation of reflectance
+	bool reflectance = (1 - pRefractionIndex) / (1 + pRefractionIndex);
+	reflectance *= reflectance;
+	return reflectance + (1 - reflectance) * pow((1 - cosine), 5);
+}
+
 bool DialectricMaterial::Scatter(const Ray& rRayIn, const HitInfo& hitInfo, Color& attenuation, Ray& scattered) const {
 	attenuation = Color(1.0, 1.0, 1.0);
 	double refractionRatio = hitInfo.frontFace ? (1.0 / refractionIndex) : refractionIndex;
@@ -12,7 +21,7 @@ bool DialectricMaterial::Scatter(const Ray& rRayIn, const HitInfo& hitInfo, Colo
 	bool cannotRefract = refractionRatio * sinTheta > 1.0;
 	Vector3 direction;
 
-	if (cannotRefract) direction = Reflect(unitDirection, hitInfo.normal);
+	if (cannotRefract || Reflectance(cosTheta, refractionRatio) > RandomDouble()) direction = Reflect(unitDirection, hitInfo.normal);
 	else direction = Refract(unitDirection, hitInfo.normal, refractionRatio);
 
 	scattered = Ray(hitInfo.coordinates, direction);
