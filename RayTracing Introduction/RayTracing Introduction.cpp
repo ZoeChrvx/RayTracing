@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    Camera camera(1200, 16.0 / 9.0, 500, 50, 20);
+    Camera camera(1200, 16.0 / 9.0, 100, 50, 25);
     camera.SetTransform(Position(13, 2, 3), Position(0, 0, 0), Vector3(0, 1, 0));
     camera.SetFocus(0.6, 10.0);
     camera.Render(world);
